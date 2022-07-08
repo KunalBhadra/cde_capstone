@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cde-capstone-deployment
+  labels:
+    app: cde-capstone-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: cde-capstone-app
+  template:
+    metadata:
+      labels:
+        app: cde-capstone-app
+    spec:
+      containers:
+        - name: cde-capstone-app
+          image: kunal78/cde-capstone
+          ports:
+            - containerPort: 80
