@@ -1,15 +1,5 @@
 ---
 
-- name: "to update the apt packages"
-  become: true
-  apt:
-    update_cache: yes
-
-- name: "upgrade packages"
-  become: true
-  apt:
-    upgrade: yes
-
 - name: "Download kubectl"
   become: true
   shell: curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
