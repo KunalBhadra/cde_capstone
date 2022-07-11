@@ -3,23 +3,23 @@
 - name: "Download kubectl"
   become: true
   shell:  |
-    sudo curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
+    curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
   args:
     chdir: $HOME
 
 - name: "Apply execute permissions to the binary"
   become: true
   shell:  |
-    sudo chmod +x ./kubectl
+    chmod +x ./kubectl
   args:
     chdir: $HOME
 
 - name: "Copy the binary to a folder to the $PATH"
   become: true
   shell:  |
-    sudo mkdir -p $HOME/bin
-    sudo cp ./kubectl $HOME/bin/kubectl  
-    sudo export PATH=$PATH:$HOME/bin
+    mkdir -p $HOME/bin
+    cp ./kubectl $HOME/bin/kubectl  
+    export PATH=$PATH:$HOME/bin
   args:
     chdir: $HOME
 
