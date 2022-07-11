@@ -6,6 +6,6 @@
 
 - name: Create service configuration
   become: true
-  command: "kubectl apply -f {{ ENVIRONMENT_NAME }}-service.yaml"
+  command: "./bin/kubectl apply -f {{ ENVIRONMENT_NAME }}-service.yaml"
   args:
     chdir: $HOME

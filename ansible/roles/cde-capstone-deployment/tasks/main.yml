@@ -7,6 +7,6 @@
 
 - name: Apply deployment configuration
   become: true
-  shell: "kubectl apply -f {{ ENVIRONMENT_NAME }}-deployment.yaml"
+  shell: "./bin/kubectl apply -f {{ ENVIRONMENT_NAME }}-deployment.yaml"
   args:
     chdir: $HOME
