@@ -128,7 +128,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "d4:2f:91:66:b5:0d:84:24:4a:09:2c:d6:8a:c1:0f:91"
+            - "82:4b:24:09:e0:c5:43:f2:76:4b:b1:24:55:cb:a0:02"
       - attach_workspace:
           at: ~/
       - run:
@@ -246,4 +246,3 @@ workflows:
             - configure-cluster
 
 
-            
