@@ -56,3 +56,6 @@
   pre_tasks:
     - name: Create a kubeconfig file for the cluster
       shell: "aws eks update-kubeconfig --region {{ AWS_DEFAULT_REGION }} --name {{ ENVIRONMENT_NAME }}-eks-cluster"
+
+
+      
