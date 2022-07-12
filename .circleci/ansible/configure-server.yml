@@ -1,7 +1,7 @@
 ---
 
 - name: Configuring EC2 instances
-  hosts: ubuntu
+  hosts: management
   user: ubuntu
   become: true
   become_method: sudo
