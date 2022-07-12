@@ -1,5 +1,17 @@
 version: 2.1
 
+commands:
+  install_ansible:
+    description: Install Ansible
+    steps:
+      - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+
 jobs:
   test-build:
     docker:
@@ -123,18 +135,15 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/base:stable
     steps:
       - checkout
+      - install_ansible
       - add_ssh_keys:
           fingerprints:
             - "82:4b:24:09:e0:c5:43:f2:76:4b:b1:24:55:cb:a0:02"
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
       - run:
           name: Configure server
           command: |
@@ -144,18 +153,15 @@ jobs:
 
   configure-cluster:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/base:stable
     steps:
       - checkout
+      - install_ansible
       - add_ssh_keys:
           fingerprints:
             - "82:4b:24:09:e0:c5:43:f2:76:4b:b1:24:55:cb:a0:02"
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
       - run:
           name: Configure server
           command: |
@@ -197,15 +203,12 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - install_ansible
       - add_ssh_keys:
           fingerprints:
             - "82:4b:24:09:e0:c5:43:f2:76:4b:b1:24:55:cb:a0:02"
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
       - run:
           name: Deploy newest Docker Image
           command: |
