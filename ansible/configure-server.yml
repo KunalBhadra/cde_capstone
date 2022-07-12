@@ -1,16 +1,8 @@
 ---
-- name: "Install dependencies"
-  hosts: management
-  user: ubuntu
-  gather_facts: false
-  become: true
-  pre_tasks:
-    - name: "Install 'unzip'"
-      apt:
-        name: [ "unzip" ]
-        state: latest
-        update_cache: yes
+- hosts: management
+  vars:
+    - AWS_ACCESS_KEY_ID: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
   tasks:
     - name: Printing env variables
       debug:
-        msg: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+        msg: "AWS_ACCESS_KEY_ID: {{ AWS_ACCESS_KEY_ID }}"
