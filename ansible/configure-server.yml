@@ -3,7 +3,7 @@
   hosts: management
   user: ubuntu
   gather_facts: false
-  become: yes
+  become: true
   pre_tasks:
     - name: "Install 'unzip'"
       apt:
