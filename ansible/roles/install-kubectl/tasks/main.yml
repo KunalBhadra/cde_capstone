@@ -1,16 +1,9 @@
 ---
 
-- name: "Copy kubectl"
-  become: true
-  copy:
-    src: kubectl
-    dest: ./bin/kubectl
-    owner: ubuntu
-    group: ubuntu
-    mode: 0755
-  #shell: curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
-  #args:
-  #  chdir: $HOME
+- name: "Download kubectl"
+  shell: curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
+  args:
+    chdir: $HOME
 
 - name: "Apply execute permissions to the binary"
   shell: chmod +x ./kubectl
