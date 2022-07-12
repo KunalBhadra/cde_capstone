@@ -10,10 +10,7 @@
         name: [ "unzip" ]
         state: latest
         update_cache: yes
-
-- hosts: management
   tasks:
     - name: Printing env variables
       debug:
         msg: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-        
