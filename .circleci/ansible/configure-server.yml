@@ -2,5 +2,5 @@
 - name: Ansible playbook to retrieve environment variables on linux servers.
   hosts: management
   tasks:
-  - debug:
-  msg: "{{ansible_env}}"
+    - debug:
+      msg: "{{ansible_env.HOME}}"
