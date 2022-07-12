@@ -1,6 +1,7 @@
 ---
-- name: Ansible playbook to retrieve environment variables on linux servers.
-  hosts: management
+- hosts: management
+  gather_facts: False
   tasks:
-    - debug:
-      msg: "{{ansible_env.HOME}}"
+    - name: Ansible playbook to retrieve environment variables on linux servers.
+      debug:
+        msg: "{{ansible_env.HOME}}"
