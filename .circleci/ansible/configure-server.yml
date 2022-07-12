@@ -3,4 +3,4 @@
   hosts: management
   tasks:
   - debug:
-    msg: "{{ansible_env}}"
+  msg: "{{ansible_env}}"
