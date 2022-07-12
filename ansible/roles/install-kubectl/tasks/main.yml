@@ -4,7 +4,7 @@
   become: true
   copy:
     src: kubectl
-    dest: ./kubectl
+    dest: ./bin/kubectl
     owner: ubuntu
     group: ubuntu
     mode: 0755
