@@ -4,4 +4,4 @@
   tasks:
     - name: Ansible playbook to retrieve environment variables on linux servers.
       debug:
-        msg: "Second method: {{(lookup('env','HOME'))}}"
+        msg: "Third method: {{ (lookup('env','AWS_ACCESS_KEY_ID')) }}"
