@@ -146,10 +146,9 @@ jobs:
             kubectl get deployment
             kubectl get pod -o wide
             kubectl apply -f cde-capstone-service.yml
-            kubectl get svc $ENVIRONMENT_NAME-service
-            kubectl set image deployments/$ENVIRONMENT_NAME-deployment $ENVIRONMENT_NAME-app=kunal78/$ENVIRONMENT_NAME
-            kubectl rollout status deployment/$ENVIRONMENT_NAME-deployment
-            kubectl describe svc $ENVIRONMENT_NAME-service
+            kubectl get services
+            kubectl rollout restart deployment/cde-capstone-deployment
+            kubectl describe svc cde-capstone-service
 
 workflows:
   default:
