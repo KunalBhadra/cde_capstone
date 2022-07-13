@@ -142,13 +142,11 @@ jobs:
             aws configure set default.region $AWS_DEFAULT_REGION
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $ENVIRONMENT_NAME-eks-cluster
             kubectl apply -f cde-capstone-deploy.yml
-            kubectl get nodes
-            kubectl get deployment
-            kubectl get pod -o wide
             kubectl apply -f cde-capstone-service.yml
-            kubectl get services
-            kubectl rollout restart deployment/cde-capstone-deployment
-            kubectl describe svc cde-capstone-service
+            kubectl get svc cde-capstone
+            kubectl set image deployments/cde-capstone cde-capstone=kunal78/cde-capstone
+            kubectl rollout status deployments/cde-capstone
+            kubectl describe svc cde-capstone
 
 workflows:
   default:

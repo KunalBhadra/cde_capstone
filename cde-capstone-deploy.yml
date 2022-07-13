@@ -1,21 +1,26 @@
+# Create web hosts based on docker image
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cde-capstone-deployment
-  labels:
-    app: cde-capstone-app
+  name: cde-capstone
 spec:
-  replicas: 4
   selector:
     matchLabels:
-      app: cde-capstone-app
+      app: cde-capstone
+  replicas: 4
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: cde-capstone-app
+        app: cde-capstone
     spec:
       containers:
-        - name: cde-capstone-app
-          image: kunal78/cde-capstone
-          ports:
-            - containerPort: 80
+      - name: cde-capstone
+        image: kunal78/cde-capstone
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

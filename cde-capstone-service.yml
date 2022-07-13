@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cde-capstone-service
+  name: cde-capstone
 spec:
   type: LoadBalancer
   selector:
-    app: cde-capstone-app
+    app: cde-capstone
   ports:
     - port: 80
       targetPort: 80
