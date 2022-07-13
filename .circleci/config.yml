@@ -165,9 +165,6 @@ workflows:
           filters:
             branches:
               only: [ main ]
-      - configure-infrastructure:
-          requires:
-            - deploy-infrastructure
       - deploy_app_svc_kube:
           requires:
             - deploy-infrastructure
