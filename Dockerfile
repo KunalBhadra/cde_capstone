@@ -1,13 +1,7 @@
-FROM python:3.7.3-stretch
+FROM nginx:latest
 
-WORKDIR /app
-
-COPY . app.py /app/
-
-# hadolint ignore=DL3013
-RUN pip install --upgrade pip &&\
-    pip install --trusted-host pypi.python.org -r requirements.txt
+COPY ./html/* /usr/share/nginx/html/
 
 EXPOSE 80
 
-CMD ["python", "app.py"]
+CMD ["nginx", "-g", "daemon off;"]

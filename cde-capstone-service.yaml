@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cde-capstone-service
+  name: capstone-pickcolor-service
 spec:
   selector:
-    app: cde-capstone
+    app: capstone-pickcolor
   ports:
     - port: 80
       targetPort: 80

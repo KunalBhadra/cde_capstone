@@ -20,18 +20,24 @@ commands:
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+  install_eksctl:
+    description: Intsall eksctl
+    steps:
+      - run:
+          name: Install eksctl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+
 jobs:
-  test-build:
+  docker-build:
     docker:
       - image: python:3.7.3-stretch
 
     steps:
       - checkout
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+          keys: [Dockerfile-lint]
 
       # run build
       - run:
@@ -44,7 +50,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
+          key: Dockerfile-lint
 
       # run lint
       - run:
@@ -76,46 +82,9 @@ jobs:
             docker image tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
             docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
 
-  deploy-infrastructure:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: yum install -y tar gzip
-      - run:
-          name: Ensure EKS network exists
-          command: |
-            aws cloudformation deploy \
-              --template-file cloudformation/network.yml \
-              --tags project=${ENVIRONMENT_NAME}-project \
-              --stack-name "${ENVIRONMENT_NAME}-eks-network" \
-              --region ${AWS_DEFAULT_REGION} \
-              --parameter-overrides file://cloudformation/network-parameters.json
-      - run:
-          name: Ensure EKS Cluster exists
-          command: |
-            aws cloudformation deploy \
-              --template-file cloudformation/cluster.yml \
-              --tags project=${ENVIRONMENT_NAME}-project \
-              --stack-name "${ENVIRONMENT_NAME}-eks-cluster" \
-              --region ${AWS_DEFAULT_REGION} \
-              --parameter-overrides file://cloudformation/cluster-parameters.json \
-              --capabilities CAPABILITY_NAMED_IAM
-          no_output_timeout: 15m
-      - run:
-          name: Ensure Nodegroup exists
-          command: |
-            aws cloudformation deploy \
-              --template-file cloudformation/nodegroup.yml \
-              --tags project=${ENVIRONMENT_NAME}-project \
-              --stack-name "${ENVIRONMENT_NAME}-eks-nodegroup" \
-              --region ${AWS_DEFAULT_REGION} \
-              --parameter-overrides file://cloudformation/nodegroup-parameters.json \
-              --capabilities CAPABILITY_NAMED_IAM
+
       
-  deploy_app_svc_kube:
+  deploy-app-svc-eks:
     docker:
       - image: ubuntu:18.04
     working_directory: ~/repo
@@ -132,6 +101,18 @@ jobs:
 
       - install_awscli
       - install_kubectl
+      - install_eksctl
+
+      - run:
+          name: Install AWS EKS cluster
+          command: |
+            export TERM=xterm
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set default.region $AWS_DEFAULT_REGION
+            nohup aws cloudformation list-exports > output.txt
+            chmod 755 create_eks_infra.sh
+            ./create_eks_infra.sh
 
       - run:
           name: Update Kube cluster
@@ -140,7 +121,7 @@ jobs:
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set default.region $AWS_DEFAULT_REGION
-            aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $ENVIRONMENT_NAME-eks-cluster
+            aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $ENVIRONMENT_NAME
             kubectl apply -f cde-capstone-deploy.yaml -f cde-capstone-service.yaml
             kubectl get all
             kubectl get nodes -o wide
@@ -150,18 +131,9 @@ jobs:
 workflows:
   default:
     jobs:
-      - test-build
-      - upload-docker:
-          requires:
-            - test-build
-          filters:
-            branches:
-              only: [ main ]
-      - deploy-infrastructure:
-          filters:
-            branches:
-              only: [ main ]
-      - deploy_app_svc_kube:
-          requires:
-            - deploy-infrastructure
+       - docker-build
+       - upload-docker:
+          requires: [docker-build]
+       - deploy-app-svc-eks::
+          requires: [docker-build]
 

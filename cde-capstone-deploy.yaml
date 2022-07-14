@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cde-capstone-deployment
+  name: capstone-pickcolor-deployment
 spec:
-  replicas: 4
+  replicas: 2
   selector:
     matchLabels:
-      app: cde-capstone
+      app: capstone-pickcolor
   template:
     metadata:
       labels:
-        app: cde-capstone
+        app: capstone-pickcolor
     spec:
       containers:
-        - name: cde-capstone
-          image: kunal78/cde-capstone
+        - name: capstone-pickcolor
+          image: kunal78/capstone-pickcolor
           ports:
             - containerPort: 80
