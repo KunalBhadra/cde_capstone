@@ -129,9 +129,8 @@ jobs:
 workflows:
   default:
     jobs:
-       - docker-build
-       - upload-docker:
-          requires: [docker-build]
-       - deploy-app-svc-eks:
-          requires: [docker-build]
+       #- docker-build
+       #- upload-docker:
+       #   requires: [docker-build]
+       - deploy-app-svc-eks
 

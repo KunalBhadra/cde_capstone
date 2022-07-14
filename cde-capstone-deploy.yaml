@@ -15,5 +15,6 @@ spec:
       containers:
         - name: capstone-pickcolor
           image: kunal78/capstone-pickcolor
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
