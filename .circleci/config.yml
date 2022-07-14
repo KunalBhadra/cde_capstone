@@ -141,14 +141,11 @@ jobs:
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set default.region $AWS_DEFAULT_REGION
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $ENVIRONMENT_NAME-eks-cluster
-            kubectl apply -f cde-capstone-deploy.yml
-            kubectl get nodes
-            kubectl get deployment
-            kubectl get pod -o wide
-            kubectl apply -f cde-capstone-service.yml
-            kubectl get services
-            kubectl rollout restart deployment/cde-capstone
-            kubectl describe svc cde-capstone
+            kubectl apply -f cde-capstone-deploy.yaml -f cde-capstone-service.yaml
+            kubectl get all
+            kubectl get nodes -o wide
+            kubectl get pods -o wide
+            kubectl get all
 
 workflows:
   default:
