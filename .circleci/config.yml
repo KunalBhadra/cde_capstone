@@ -109,9 +109,15 @@ jobs:
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set default.region $AWS_DEFAULT_REGION
-            nohup aws cloudformation list-exports > output.txt
-            chmod 755 create_eks_infra.sh
-            ./create_eks_infra.sh
+            aws cloudformation list-exports > cluster.txt
+            cat cluster.txt
+            if [ $(grep -i "eksctl-capstone-pickcolor-eks" cluster.txt | wc -l) -ge 1 ]
+              then
+              echo "already EKS Cluster exists in environment"
+              else
+              echo "creating the EKS Cluster"
+              eksctl create cluster --name $ENVIRONMENT_NAME-eks --version 1.19 --region $AWS_DEFAULT_REGION --nodegroup-name $ENVIRONMENT_NAME-node --node-type t3.large --nodes-min 2 --nodes-max 4 --managed
+            fi
 
       - run:
           name: Update Kube cluster
@@ -122,7 +128,7 @@ jobs:
             aws configure set default.region $AWS_DEFAULT_REGION
             aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $ENVIRONMENT_NAME-eks
             kubectl apply -f cde-capstone-deploy.yaml -f cde-capstone-service.yaml
-            kubectl get all
+            kubectl get deployment
             kubectl get nodes -o wide
             kubectl get pods -o wide
             kubectl get all
