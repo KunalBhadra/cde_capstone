@@ -17,9 +17,21 @@ This project deploys a html webpage which will generate random colour and its co
 
 *  Test the code the code using linting:
 
-    ![alt text](/Screenshots/Lint_Success.jpg)
+    ![](/Screenshots/Lint_Success.jpg)
 
 *	Create Docker image for this Application
+
+    ![](/Screenshots/Docker_Image_Creation.png)
+
+*  	Upload the Docker image into Docker Hub
+
+    ![](/Screenshots/Docker_image_uploaded_to_Docker_Hub.jpg)
+
+•	Create Kubernetes cluster in AWS using eksctl tool
+
+    ![alt text](/Screenshots/EKS-Cluster-Installation.jpg)
+    ![](/Screenshots/EKS_Cluster.png)
+
 
 
 
