@@ -17,7 +17,10 @@ This project deploys a html webpage which will generate random colour and its co
 
 *  Test the code the code using linting:
 
-![alt text](image.png)
+    ![alt text](/Screenshots/Lint_Success.jpg)
+
+*	Create Docker image for this Application
+
 
 
 
