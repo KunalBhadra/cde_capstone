@@ -5,7 +5,7 @@ This project represents the successful completion of the last final Capstone pro
 This project deploys a html webpage which will generate random colour and its corresponding hex colour code when clicking on the __Color__ button. 
 
 ## Technologies used:
----
+
 *	Docker
 *	Kubectl
 *	Eksctl
@@ -14,9 +14,11 @@ This project deploys a html webpage which will generate random colour and its co
 *	AWS
 
 ## Steps:
----
+
 *  Test the code the code using linting:
-![] (image.png)
+
+![alt text](image.png)
+
 
 
 
