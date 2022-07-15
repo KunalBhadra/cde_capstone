@@ -29,8 +29,8 @@ This project deploys a html webpage which will generate random colour and its co
 
 •	Create Kubernetes cluster in AWS using eksctl tool
 
-    ![alt text](/Screenshots/EKS-Cluster-Installation.jpg)
-    ![](/Screenshots/EKS_Cluster.png)
+    ![](/Screenshots/EKS-Cluster-Installation.jpg)
+
 
 
 
